@@ -1,0 +1,104 @@
+@import '../../style/val.less';
+
+@warning-color: #f56a07;
+
+.pages-login {
+  background-color: @primary-color2;
+  min-height: 100vh;
+  background-image: url('http://lhc-image.oss-cn-beijing.aliyuncs.com/leo/2020/12/09/C9E4A1607494859694.png');
+  background-repeat: no-repeat;
+  background-position-x: center;
+
+  .logo {
+    position: absolute;
+    top: 6%;
+    left: 8%;
+    width: 24px;
+    height: 24px;
+  }
+
+  .login-center {
+    position: absolute;
+    top: 380px;
+    left: 15%;
+    transform: translate(0, -50%);
+    width: 70%;
+    margin: auto;
+    padding-right: 3%;
+    text-align: center;
+    user-select: none;
+  }
+
+  .login-body {
+    float: right;
+    position: relative;
+    width: 305px;
+    height: 390px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1px 3px 5px;
+    text-align: center;
+    border-radius: 10px;
+
+    .text-wrap {
+      position: relative;
+      padding: 10px;
+      text-align: right;
+      font-size: 14px;
+      font-weight: 500;
+      overflow: hidden;
+      border-radius: 0 10px 0 0;
+    }
+  }
+
+  .popover {
+    padding-right: 32px;
+  }
+
+  .popover-content {
+    position: relative;
+    border-radius: 4px;
+    border: 1px solid @warning-color;
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 4px;
+    color: @warning-color;
+    font-weight: normal;
+
+    .popover-arrow {
+      position: absolute;
+      display: block;
+      top: 50%;
+      right: -4px;
+      transform: translateY(-50%) rotate(45deg);
+      width: 8px;
+      height: 8px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: @warning-color @warning-color transparent transparent;
+      background: #ffffff;
+      box-shadow: 3px -3px 7px rgba(0, 0, 0, 0.07);
+    }
+  }
+
+  .icon-wrap {
+    position: absolute;
+    width: 80px;
+    height: 40px;
+    top: -11px;
+    right: -35px;
+    padding: 10px 30px;
+    background: @primary-color2;
+    transform: rotateZ(45deg);
+    overflow: hidden;
+  }
+
+  .icon {
+    position: absolute;
+    left: 24px;
+    top: 16px;
+    font-size: 32px;
+    color: @primary-color;
+    transform: rotate(-45deg);
+    cursor: pointer;
+  }
+}
