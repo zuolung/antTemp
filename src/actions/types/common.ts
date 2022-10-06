@@ -1,5 +1,3 @@
-import { IResponse } from '../commonTypes/response'
-
 /**
  * 角色列表
  * @url /z/api/1.0/role/list

@@ -39,7 +39,7 @@
   },
   "include": [
     "./src/",
-    "./types/global.d.ts",
+    "./types/",
     "./eslint.config.js",
     "./lint-staged.config.js"
   ],

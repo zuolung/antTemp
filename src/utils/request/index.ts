@@ -1,4 +1,4 @@
-import { getIsLocalDev, getEnv } from '@/utils/common/env'
+import { getEnv } from '@/utils/common/env'
 import { DOMAIN } from './contanst'
 
 export default function request<T, TRes>(
@@ -8,7 +8,6 @@ export default function request<T, TRes>(
 ): Promise<TRes> {
   const domain = DOMAIN[getEnv()].z
   const url_ = `${domain}${url}`
-  console.info(domain, '---------------', url_)
 
   const res = fetch(
     method == 'GET' ? url_ : getNewUrl(url_, params as Record<string, any>),

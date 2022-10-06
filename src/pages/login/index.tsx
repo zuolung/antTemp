@@ -1,13 +1,13 @@
 import { useState } from 'react'
+import { MobileOutlined, QrcodeOutlined } from '@ant-design/icons'
+import { cacheSetSync } from '@/cache'
 import PhoneLogin from './com/phoneLogin'
 import CodeLogin from './com/codeLogin'
-import { cacheSetSync } from '@/cache'
-import { MobileOutlined, QrcodeOutlined } from '@ant-design/icons'
 import './index.less'
 
 type IloginType = 'phone' | 'code'
 
-export default function Login(props) {
+export default function Login(props: Project.IPageProps) {
   const [loginType, setLoginType] = useState<IloginType>('phone')
 
   return (
