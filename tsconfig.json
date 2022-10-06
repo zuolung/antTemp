@@ -37,6 +37,11 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src", "./types/global.d.ts"],
+  "include": [
+    "./src/**/*",
+    "./types/global.d.ts",
+    "./eslint.config.js",
+    "./lint-staged.config.js"
+  ],
   "compileOnSave": false
 }
