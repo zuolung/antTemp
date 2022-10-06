@@ -7,11 +7,14 @@ import {
 import { useState } from 'react'
 import './phoneLogin.less'
 import classnames from 'classnames'
+import { loginCommon } from '@/actions/actions/common'
 
 export default function PhoneLogin({
   swtichType,
+  success,
 }: {
   swtichType: (type: string) => void
+  success: (token: string) => void
 }) {
   const [data, setData] = useState({
     phone: '',
@@ -36,6 +39,15 @@ export default function PhoneLogin({
 
   const avatarCls = (cls) =>
     classnames(`avatar-${cls}`, { collapsed: data.collapsed })
+
+  const loginAction = async function () {
+    const res = await loginCommon({ phone: data.phone, code: data.code })
+    if (res.success) {
+      message.success('登录成功').then(() => {
+        success(res.token)
+      })
+    }
+  }
 
   return (
     <Form className="login-components-phone-login" onFinish={() => {}}>
@@ -66,6 +78,7 @@ export default function PhoneLogin({
         type="primary"
         htmlType="submit"
         disabled={!data.code || !data.phone}
+        onClick={loginAction}
       >
         立即登录
       </Button>

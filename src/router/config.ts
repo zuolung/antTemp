@@ -7,8 +7,4 @@ export default [
     path: '/pages/login/index',
     component: () => import('@/pages/login/index'),
   },
-  {
-    path: '/pages/haha',
-    component: () => import('@/pages/haha'),
-  },
 ]

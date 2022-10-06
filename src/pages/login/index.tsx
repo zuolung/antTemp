@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import PhoneLogin from './com/phoneLogin'
 import CodeLogin from './com/codeLogin'
+import { cacheSetSync } from '@/cache'
 import { MobileOutlined, QrcodeOutlined } from '@ant-design/icons'
 import './index.less'
 
 type IloginType = 'phone' | 'code'
 
-export default function Login() {
+export default function Login(props) {
   const [loginType, setLoginType] = useState<IloginType>('phone')
 
   return (
@@ -36,7 +37,13 @@ export default function Login() {
             </div>
 
             {loginType === 'phone' && (
-              <PhoneLogin swtichType={() => setLoginType('code')} />
+              <PhoneLogin
+                swtichType={() => setLoginType('code')}
+                success={(token) => {
+                  cacheSetSync('token', token)
+                  props.navigate('/pages/list/index')
+                }}
+              />
             )}
             {loginType === 'code' && (
               <CodeLogin swtichType={() => setLoginType('phone')} />

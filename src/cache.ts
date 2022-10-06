@@ -1,14 +1,7 @@
 // 和UI无关的全局数据存储在这里，和UI相关的全局数据存储在store.ts文件中
-import Cache from '@antmjs/cache'
+import Cache from '@antmjs/cache/dist/h5'
 
-const {
-  cacheGetSync,
-  cacheGet,
-  cacheSetSync,
-  cacheSet,
-  cacheRemoveSync,
-  cacheRemove,
-} = Cache({
+const { cacheGetSync, cacheSetSync } = Cache({
   ram: {},
   loc: {
     token: '',
@@ -16,11 +9,4 @@ const {
   },
 })
 
-export {
-  cacheGetSync,
-  cacheGet,
-  cacheSetSync,
-  cacheSet,
-  cacheRemoveSync,
-  cacheRemove,
-}
+export { cacheGetSync, cacheSetSync }

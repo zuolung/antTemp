@@ -5,6 +5,7 @@ import { defineConfig } from 'vite'
 import reactPlugin from '@vitejs/plugin-react'
 import VitePluginRouters from './plugins/vite-plugin-routers'
 import VitePluginStyleImport from './plugins/vite-plugin-style-import'
+import proxyConfig from './proxy.config'
 
 const CWD = process.cwd()
 
@@ -21,6 +22,7 @@ export default defineConfig(({ mode }) => {
 
     server: {
       host: '0.0.0.0',
+      proxy: proxyConfig,
     },
 
     build: {
@@ -45,6 +47,8 @@ export default defineConfig(({ mode }) => {
     },
 
     plugins: [
+      legacy({}),
+      reactPlugin(),
       VitePluginRouters({ watch: isDev }),
       VitePluginStyleImport({
         name: 'antd',
@@ -58,8 +62,6 @@ export default defineConfig(({ mode }) => {
           }
         },
       }),
-      reactPlugin(),
-      legacy({}),
     ],
 
     optimizeDeps: {

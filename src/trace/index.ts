@@ -1,4 +1,4 @@
-import Trace, { EGcs, EAppType, EAppSubType } from '@antmjs/trace'
+import Trace, { EGcs, EAppType, EAppSubType } from '@antmjs/trace/dist/h5'
 import { cacheGetSync } from '@/cache'
 
 // https://github.com/AntmJS/antm/tree/main/packages/trace
@@ -8,7 +8,7 @@ const { exposure, log, monitor } = Trace(
     appType: EAppType.browser,
     appSubType: EAppSubType.browser,
     // 应用内应用版本号
-    appSubTypeVersion: '',
+    appSubTypeVersion: '123',
     getUserId() {
       return new Promise((resolve) => {
         const userId = cacheGetSync('userId')

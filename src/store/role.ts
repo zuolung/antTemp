@@ -13,6 +13,6 @@ export type IRoleStore = {
 }
 
 export const roleStore = atom({
-  key: 'roleStore',
+  key: 'role',
   default: {},
 }) as RecoilState<IRoleStore>

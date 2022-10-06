@@ -1,8 +1,11 @@
-import { PureComponent } from 'react'
+import React, { PureComponent } from 'react'
 import { monitor } from '@/trace/index'
-import { EMlf } from '@antmjs/trace'
+import { EMlf } from '@antmjs/trace/dist/h5'
 
-export default class ErrorBoundary extends PureComponent<{ setError: any }> {
+export default class ErrorBoundary extends PureComponent<{
+  setError: any
+  children: React.ReactNode
+}> {
   constructor(props: any) {
     super(props)
   }
