@@ -9,27 +9,29 @@ declare namespace Project {
   interface IPageProps {
     title?: string
     path: string
-    navigate: NavigateFunction
-    location: Location
+    navigate: {
+      (
+        to: string,
+        options?: {
+          replace?: boolean
+          state?: any
+          preventScrollReset?: boolean
+          relative?: 'route' | 'path'
+        },
+      ): void
+      (delta: number): void
+    }
+    location: {
+      state: any
+      key: string
+      pathname: string
+      search: string
+      hash: string
+    }
+    setError: (err: {
+      code?: string | number
+      message?: string
+      data?: { error?: any; errorInfo?: any }
+    }) => void
   }
-}
-
-interface NavigateFunction {
-  (to: string, options?: NavigateOptions): void
-  (delta: number): void
-}
-
-interface NavigateOptions {
-  replace?: boolean
-  state?: any
-  preventScrollReset?: boolean
-  relative?: 'route' | 'path'
-}
-
-interface Location {
-  state: any
-  key: string
-  pathname: string
-  search: string
-  hash: string
 }

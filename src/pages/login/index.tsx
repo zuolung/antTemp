@@ -39,8 +39,8 @@ export default function Login(props: Project.IPageProps) {
             {loginType === 'phone' && (
               <PhoneLogin
                 swtichType={() => setLoginType('code')}
-                success={(token) => {
-                  cacheSetSync('token', token)
+                success={(data) => {
+                  cacheSetSync('token', data.token)
                   props.navigate('/pages/list/index')
                 }}
               />

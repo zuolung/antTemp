@@ -1,0 +1,41 @@
+.__global-layout {
+  .ant-layout-header {
+    padding: 0;
+  }
+
+  .ant-layout-has-sider {
+    margin-top: 64px;
+  }
+
+  .ant-layout-sider {
+    position: fixed;
+    left: 0;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+    padding-top: @padding-md;
+  }
+
+  .ant-layout-content {
+    padding: @padding-md;
+    background: @layout-body-background;
+  }
+
+  .__top-header {
+    position: fixed;
+    width: 100%;
+    z-index: 90;
+  }
+
+  .__main-content {
+    margin-left: 200px;
+
+    &.collapsed {
+      margin-left: 80px;
+    }
+  }
+
+  .__breadcrumb-header {
+    height: inherit;
+  }
+}

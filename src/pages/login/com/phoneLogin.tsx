@@ -8,13 +8,14 @@ import { useState } from 'react'
 import './phoneLogin.less'
 import classnames from 'classnames'
 import { loginCommon } from '@/actions/actions/common'
+import { login } from '@/actions/types/common'
 
 export default function PhoneLogin({
   swtichType,
   success,
 }: {
   swtichType: (type: string) => void
-  success: (token: string) => void
+  success: (data: login['response']['data']) => void
 }) {
   const [data, setData] = useState({
     phone: '',
@@ -44,7 +45,7 @@ export default function PhoneLogin({
     const res = await loginCommon({ phone: data.phone, code: data.code })
     if (res.success) {
       message.success('登录成功').then(() => {
-        success(res.token)
+        success(res.data)
       })
     }
   }

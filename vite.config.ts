@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
       assetsDir: './assets',
       cssTarget: ['chrome38', 'ios10'],
       assetsInlineLimit: 50 * 1024,
+      chunkSizeWarningLimit: 500,
     },
 
     css: {
@@ -52,15 +53,7 @@ export default defineConfig(({ mode }) => {
       VitePluginRouters({ watch: isDev }),
       VitePluginStyleImport({
         name: 'antd',
-        createImport(component) {
-          const jsStylePath = `node_modules/antd/es/${component}/style/css.js`
-          const cssStylePath = `node_modules/antd/es/${component}/style/index.less`
-          if (fs.existsSync(join(CWD, cssStylePath))) {
-            return `import "antd/es/${component}/style/index.less"`
-          } else if (fs.existsSync(join(CWD, jsStylePath))) {
-            return `import "antd/es/${component}/style/css.js"`
-          }
-        },
+        createImport: createImport,
       }),
     ],
 
@@ -69,3 +62,15 @@ export default defineConfig(({ mode }) => {
     },
   }
 })
+
+function createImport(component: string) {
+  const jsStylePath = `node_modules/antd/es/${component}/style/css.js`
+  const cssStylePath = `node_modules/antd/es/${component}/style/index.less`
+  if (fs.existsSync(join(CWD, cssStylePath))) {
+    return `import "antd/es/${component}/style/index.less"`
+  } else if (fs.existsSync(join(CWD, jsStylePath))) {
+    return `import "antd/es/${component}/style/css.js"`
+  } else {
+    return ''
+  }
+}

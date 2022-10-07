@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import routersConfig from './config'
 import { LoadPage, PageNotFind } from '@/components/common'
+import routersConfig from './config'
 import PageWrapper from './pageWrapper'
 
 const NO_TOKEN_PAGES = ['/pages/login/index']
+const NO_MENU_PAGES = ['/pages/login/index']
 
 export default function App() {
   return (
@@ -16,7 +17,7 @@ export default function App() {
               key={item.path}
               path={item.path}
               element={
-                <PageWrapper>
+                <PageWrapper noMenuPages={NO_MENU_PAGES}>
                   <LoadPage
                     {...item}
                     noTokenPages={NO_TOKEN_PAGES}

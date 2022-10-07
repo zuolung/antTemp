@@ -11,7 +11,7 @@
     "prepare": "npx husky install",
     "start": "yarn dev",
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "mock": "antm-api watch --path ./src/actions/types --mock true --server true --action true"
   },
   "keywords": [],
@@ -26,6 +26,7 @@
     "axios": "^1.0.0",
     "dayjs": "^1.11.5",
     "eslint": "8.21.0",
+    "path-to-regexp": "^6.2.1",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-document-title": "^2.0.3",

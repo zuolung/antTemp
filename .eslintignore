@@ -21,5 +21,7 @@
 .prettierrc
 .stylelintignore
 LICENSE
+build
+plugins
+vite.config.ts
 
-src/actions/rapper/*

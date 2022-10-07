@@ -1,5 +1,6 @@
 *.log
 *.swp
+*.error
 
 .vs
 .cache
@@ -8,3 +9,4 @@
 .rn_temp
 .DS_Store
 node_modules
+build

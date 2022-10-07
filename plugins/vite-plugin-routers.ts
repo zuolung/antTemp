@@ -99,6 +99,7 @@ function createRouter(route: string) {
     routers.push({
       path: route,
       component: `@${route}`,
+      resCode: route.replace(/\//g, '_'),
     })
   }
 }
@@ -128,6 +129,7 @@ async function writeRoutes() {
       routesCode += `{
         path: "${rou.path}",
         component: () => import("${rou.component}"),
+        resCode: "${rou.resCode}",
       },`
     }
   }

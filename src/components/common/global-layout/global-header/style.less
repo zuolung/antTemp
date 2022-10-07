@@ -1,0 +1,202 @@
+.__global-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 64px;
+  background: @component-background;
+  box-shadow: -4px 0 8px @shadow-color;
+
+  .header-left {
+    display: flex;
+  }
+
+  .logo {
+    width: 200px;
+    height: 64px;
+    line-height: 64px;
+    transition: ease 0.2s;
+    cursor: pointer;
+
+    &.collapsed {
+      width: 80px;
+
+      .icon-icon-test {
+        margin-left: 26px;
+      }
+
+      .icon-xiaodian {
+        display: none;
+      }
+    }
+
+    i {
+      color: @primary-color;
+      font-size: 30px;
+
+      &.icon-icon-test {
+        margin-left: 36px;
+      }
+
+      &.icon-xiaodian {
+        margin-left: 26px;
+        font-size: 28px;
+      }
+    }
+  }
+
+  .collapsed-button {
+    width: 40px;
+    height: 64px;
+    border-radius: 0;
+    text-align: center;
+    font-size: 24px;
+    line-height: 64px;
+    margin-left: @margin-xs;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
+  .system-tabs {
+    padding-left: 32px;
+
+    .tab-header {
+      height: 100%;
+
+      .ant-tabs-nav {
+        height: 100%;
+        margin: 0;
+      }
+    }
+
+    .ant-tabs-bar {
+      margin: 0;
+      border: none;
+    }
+
+    .ant-tabs-nav-container,
+    .ant-tabs-top {
+      .ant-tabs-nav {
+        &::before {
+          display: none;
+        }
+
+        &.ant-tabs-tab {
+          padding: @padding-sm 0;
+        }
+      }
+    }
+
+    .ant-tabs-nav-container {
+      margin-bottom: 0;
+
+      .ant-tabs-nav .ant-tabs-tab {
+        padding: @padding-sm 0;
+      }
+    }
+  }
+
+  .header-right {
+    height: 100%;
+    padding-right: 32px;
+
+    .action {
+      cursor: pointer;
+      display: inline-block;
+      transition: all 0.3s;
+      height: 100%;
+
+      > i {
+        font-size: @font-size-base + 2px;
+        vertical-align: middle;
+      }
+    }
+
+    .search {
+      padding: 0;
+      margin: 0 @margin-sm;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+
+    .account {
+      display: flex;
+      align-items: center;
+
+      .avatar {
+        margin: 18px 8px 20px 0;
+        vertical-align: middle;
+        display: inline-block;
+      }
+
+      .name {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: inline-block;
+        line-height: 24px;
+
+        .nick {
+          margin-bottom: 0;
+          font-weight: bolder;
+        }
+
+        .role {
+          margin-bottom: 0;
+          color: @text-color-secondary;
+          font-weight: 300;
+        }
+      }
+
+      .anticon-caret-down {
+        margin-left: @margin-md;
+      }
+    }
+  }
+}
+
+.__global-dropdown-menu {
+  width: 200px;
+
+  .ant-dropdown-menu-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border: @border-width-base @border-style-base @background-color-light;
+
+    &:last-child {
+      border: none;
+    }
+
+    .ant-dropdown-menu-title-content {
+      // 兼容新版本的 antd
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .anticon-right {
+      align-self: center;
+    }
+  }
+
+  .ant-switch {
+    margin-left: @margin-md;
+    vertical-align: top;
+  }
+
+  .switch-role {
+    .content {
+      display: flex;
+      flex-direction: column;
+
+      .current {
+        margin-top: 4px;
+        font-size: @font-size-base - 2px;
+        color: @text-color-secondary;
+      }
+    }
+  }
+}
