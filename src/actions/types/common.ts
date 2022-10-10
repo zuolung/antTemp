@@ -44,29 +44,3 @@ export type userInfo = {
     success: boolean
   }
 }
-
-/**
- * 菜单列表
- * @url /z/api/1.0/menu/list
- * @method GET
- */
-export type menuList = {
-  request: Record<string, any>
-  response: {
-    success: boolean
-    code: number
-    /**
-     * @rule 2-6
-     */
-    data: menuSource[]
-  }
-}
-
-export type menuSource = {
-  baseName?: string
-  children: menuSource[] | null
-  type?: string
-  resCode: string
-  resName: string
-  parentCode?: string
-}

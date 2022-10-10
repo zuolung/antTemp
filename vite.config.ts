@@ -32,6 +32,7 @@ export default defineConfig(({ mode }) => {
       cssTarget: ['chrome38', 'ios10'],
       assetsInlineLimit: 50 * 1024,
       chunkSizeWarningLimit: 500,
+      sourcemap: true,
     },
 
     css: {

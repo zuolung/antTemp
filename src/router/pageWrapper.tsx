@@ -4,9 +4,10 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import ErrorBoundary from '@/components/common/error-boundary'
 import { commonStore, userInfoStore } from '@/store/index'
 import { GlobalLayout } from '@/components/common'
-import { userInfoCommon, menuListCommon } from '@/actions/actions/common'
-import { menuSource } from '@/actions/types/common'
+import { userInfoCommon } from '@/actions/actions/common'
 import routersConfig from './config'
+import { queryToObj } from '@/utils/common/query'
+import { menu } from './menu'
 
 export default function PageWrapper({
   children,
@@ -17,43 +18,17 @@ export default function PageWrapper({
 }) {
   const [common, setCommon] = useRecoilState(commonStore)
   const [userInfo, setUserinfo] = useRecoilState(userInfoStore)
-  const [menu, setMenu] = useState<menuSource[]>()
   const navigate = useNavigate()
   const location = useLocation()
+  const [baseName, setBaseName] = useState('finance')
 
   useEffect(function () {
     getUserInfo()
-    getMenuInfo()
   }, [])
 
   const getUserInfo = async function () {
     const res = await userInfoCommon({})
     setUserinfo(res.data)
-  }
-
-  const getMenuInfo = async function () {
-    const res = await menuListCommon({})
-    if (res[0]) {
-      setMenu(res.data)
-    } else {
-      setMenu([
-        {
-          resName: '列表管理',
-          resCode: '_pages_list_index',
-          type: '2',
-          baseName: 'list',
-          children: [
-            {
-              resName: '列表管理',
-              resCode: '_pages_list_index',
-              parentCode: 'list',
-              type: '2',
-              children: [],
-            },
-          ],
-        },
-      ])
-    }
   }
 
   const setError = function (error) {
@@ -76,18 +51,27 @@ export default function PageWrapper({
   }
 
   return (
-    <GlobalLayout
-      user={userInfo}
-      appRoutes={routersConfig}
-      resourceTree={menu || []}
-    >
-      <ErrorBoundary setError={setError}>
+    <ErrorBoundary setError={setError}>
+      <GlobalLayout
+        basename={baseName}
+        user={userInfo}
+        appRoutes={routersConfig}
+        resourceTree={menu || []}
+        extraProps={{
+          onTabChange: (e) => {
+            setBaseName(e.resCode)
+          },
+        }}
+      >
         {cloneElement(children as any, {
           navigate,
-          location,
+          location: {
+            ...location,
+            query: queryToObj(location.search.replace('?', '')),
+          },
           setError,
         })}
-      </ErrorBoundary>
-    </GlobalLayout>
+      </GlobalLayout>
+    </ErrorBoundary>
   )
 }

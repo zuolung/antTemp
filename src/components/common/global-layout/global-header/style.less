@@ -10,12 +10,34 @@
     display: flex;
   }
 
+  .logo-con {
+    display: flex;
+    align-items: baseline;
+
+    span {
+      padding-left: 22px;
+      font-size: 22px;
+      color: @primary-color;
+      font-family: monospace;
+      position: relative;
+      top: -4px;
+    }
+
+    img {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
   .logo {
     width: 200px;
     height: 64px;
     line-height: 64px;
     transition: ease 0.2s;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &.collapsed {
       width: 80px;
@@ -27,19 +49,9 @@
       .icon-xiaodian {
         display: none;
       }
-    }
 
-    i {
-      color: @primary-color;
-      font-size: 30px;
-
-      &.icon-icon-test {
-        margin-left: 36px;
-      }
-
-      &.icon-xiaodian {
-        margin-left: 26px;
-        font-size: 28px;
+      .logo-con span {
+        display: none;
       }
     }
   }

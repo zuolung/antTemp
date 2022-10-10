@@ -1,3 +1,6 @@
+/**
+ * @title 登录
+ */
 import { useState } from 'react'
 import { MobileOutlined, QrcodeOutlined } from '@ant-design/icons'
 import { cacheSetSync } from '@/cache'
@@ -41,7 +44,7 @@ export default function Login(props: Project.IPageProps) {
                 swtichType={() => setLoginType('code')}
                 success={(data) => {
                   cacheSetSync('token', data.token)
-                  props.navigate('/pages/list/index')
+                  props.navigate('/list/index')
                 }}
               />
             )}

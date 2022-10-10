@@ -11,6 +11,7 @@ type Iprops = {
   noTokenPages: string[]
   path: string
   redirect: string
+  title?: string
 } & Record<string, any>
 
 type IState = {

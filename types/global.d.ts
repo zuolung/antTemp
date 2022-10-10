@@ -27,6 +27,7 @@ declare namespace Project {
       pathname: string
       search: string
       hash: string
+      query: Record<string, any>
     }
     setError: (err: {
       code?: string | number

@@ -9,7 +9,7 @@ export interface ResourceNode {
   /** 项目 basename */
   baseName?: string
   /** 子资源 */
-  children: ResourceNode[] | null
+  children?: ResourceNode[] | null
   /** 资源类型 1:系统 2:菜单 3:功能 */
   type?: string
   /** 资源code */
@@ -36,7 +36,7 @@ export interface AppRoute {
 }
 
 interface MenuProps extends AppRoute, ResourceNode {
-  children: MenuProps[] | null
+  children?: MenuProps[] | null
 }
 
 interface SiderMenuProps {
@@ -130,9 +130,9 @@ const SiderMenu: React.FC<SiderMenuProps> = (props) => {
   // 渲染二级菜单
   const renderMenuItem = useCallback(
     (item: MenuProps) => {
-      const onMenuItemClick = ({ menu, path }: AppRoute) => {
+      const onMenuItemClick = ({ menu, path, ...others }: AppRoute) => {
         const link = menu || path
-
+        console.info(others, '____________', selectedKeys)
         if (link) props.navigate(link)
       }
 
@@ -142,7 +142,7 @@ const SiderMenu: React.FC<SiderMenuProps> = (props) => {
         </Menu.Item>
       )
     },
-    [history],
+    [history, selectedKeys],
   )
 
   // 渲染一级菜单
@@ -162,6 +162,8 @@ const SiderMenu: React.FC<SiderMenuProps> = (props) => {
       return renderMenuItem(route)
     })
   }, [menuData, renderMenuItem])
+
+  console.info('??', selectedKeys)
 
   return (
     <Menu

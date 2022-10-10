@@ -34,7 +34,7 @@ export interface DropdownMenu {
 
 export interface ExtraProps {
   /** CRM 系统是否灰度 */
-  hasCRMGray: boolean
+  hasCRMGray?: boolean
   /** CRM 系统当前灰度状态 */
   isCRMGray?: boolean
   /** 切换新老版本回调 */
@@ -85,10 +85,10 @@ type Window = globalThis.Window & typeof globalThis & { less: any }
 const defaultExtraProps: GlobalHeaderProps['extraProps'] = {
   hasCRMGray: false,
   onLogin() {
-    window.location.href = `/pages/login/index?redirect=${window.location.href}`
+    window.location.href = `/login/index?redirect=${window.location.href}`
   },
   async onLogout() {
-    window.location.href = `/pages/login/index?redirect=${window.location.href}`
+    window.location.href = `/login/index?redirect=${window.location.href}`
   },
   onTabChange(tab) {
     if (tab.baseName) window.location.href = tab.baseName
@@ -282,8 +282,13 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = (props) => {
             host && props.navigate('/')
           }}
         >
-          <i className="dianfont icon-icon-test" />
-          <i className="dianfont icon-xiaodian" />
+          <div className="logo-con">
+            <img
+              src="https://antm-js.gitee.io/resource/antmjs-vantui.jpg"
+              alt=""
+            />
+            <span>Antmjs</span>
+          </div>
         </div>
         {!extraProps.hideCollapsedButton && (
           <div

@@ -3,14 +3,14 @@ import { LoadPage, PageNotFind } from '@/components/common'
 import routersConfig from './config'
 import PageWrapper from './pageWrapper'
 
-const NO_TOKEN_PAGES = ['/pages/login/index']
-const NO_MENU_PAGES = ['/pages/login/index']
+const NO_TOKEN_PAGES = ['/login/index']
+const NO_MENU_PAGES = ['/login/index']
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="pages/list/index" />} />
+        <Route path="/" element={<Navigate to="welcome" />} />
         {routersConfig.map((item: any) => {
           return (
             <Route
@@ -21,7 +21,7 @@ export default function App() {
                   <LoadPage
                     {...item}
                     noTokenPages={NO_TOKEN_PAGES}
-                    redirect="/pages/login/index"
+                    redirect="/login/index"
                   />
                 </PageWrapper>
               }

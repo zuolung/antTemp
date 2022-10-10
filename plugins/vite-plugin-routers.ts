@@ -9,7 +9,7 @@ const DEFAULT_PAGES = join(process.cwd(), './src/pages')
 const DEAULT_IGNORE = ['com', 'components', 'utils']
 const ROUTER_PATH = join(process.cwd(), './src/router/config.ts')
 const SRC = join(process.cwd(), './src')
-
+const CWD = process.cwd()
 const routersMap: string[] = []
 const routers: any[] = []
 let isWatched = false
@@ -25,7 +25,7 @@ export default function VitePluginRouters({
 }): Plugin {
   const pages_ = pages || DEFAULT_PAGES
   const ignore_ = ignore || DEAULT_IGNORE
-  const globPath = [`${pages_}/*/*.tsx`, `${pages_}/*.tsx`]
+  const globPath = [`${pages_}/**/*.tsx`, `${pages_}/*.tsx`]
   const watchPath = globPath.concat([`${pages_}/*`, `${pages_}/*/**`])
 
   return {
@@ -99,7 +99,7 @@ function createRouter(route: string) {
     routers.push({
       path: route,
       component: `@${route}`,
-      resCode: route.replace(/\//g, '_'),
+      resCode: route.replace(/^\/pages\//, '').replace(/\//g, '_'),
     })
   }
 }
@@ -125,11 +125,17 @@ async function writeRoutes() {
 
   for (let i = 0; i < routers.length; i++) {
     const rou = routers[i]
+    const codesStr = fs.readFileSync(
+      rou.component.replace('@', `${CWD}/src`) + '.tsx',
+      'utf-8',
+    )
+    const title = getTitleFromComments(codesStr)
     if (rou) {
       routesCode += `{
-        path: "${rou.path}",
+        path: "${rou.path.replace(/^\/pages/, '')}",
         component: () => import("${rou.component}"),
         resCode: "${rou.resCode}",
+        title: "${title}"
       },`
     }
   }
@@ -183,4 +189,31 @@ function formatCode(codes: string) {
     if (err) console.error(`formatCode err: ${err}`)
     return res
   }
+}
+
+function getTitleFromComments(codeStr: string) {
+  const commentsMatch = codeStr.match(/\/\*\*[\w\W]*\*\//)
+  if (commentsMatch) {
+    const commentsStr = commentsMatch[0]
+    const comm: Record<string, any> = parseComments(commentsStr)
+    return comm.title
+  }
+}
+
+function parseComments(comments = '') {
+  let res = {}
+  const arr = comments
+    .split('\n')
+    .filter((item) => item.includes('@'))
+    .map((item) => item.replace(/^[\s]+/g, ''))
+    .map((item) => item.replace('* ', ''))
+    .map((item) => item.replace('@', ''))
+    .map((item) => item.replace(/[\s]+/, '##'))
+
+  arr.forEach((item) => {
+    const cons = item.split('##')
+    res[cons[0]] = cons[1]
+  })
+
+  return res
 }
