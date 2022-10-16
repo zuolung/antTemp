@@ -1,5 +1,11 @@
 export default [
   {
+    path: '/finance/account/detail',
+    component: () => import('@/pages/finance/account/detail'),
+    resCode: 'finance_account_detail',
+    title: '账户详情',
+  },
+  {
     path: '/finance/account/index',
     component: () => import('@/pages/finance/account/index'),
     resCode: 'finance_account_index',

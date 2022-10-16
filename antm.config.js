@@ -2,6 +2,7 @@ module.exports = {
   // https://www.npmjs.com/package/@antmjs/api
   api: {
     title: 'antTemp-接口文档',
+    buildPort: 8981,
     action: {
       dirPath: '../actions',
       createDefaultModel: function ({
@@ -42,7 +43,7 @@ module.exports = {
       },
     },
     mock: {
-      port: 6767,
+      port: 9999,
     },
   },
 }

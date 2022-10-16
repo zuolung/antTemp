@@ -119,6 +119,7 @@ const SiderMenu: React.FC<SiderMenuProps> = (props) => {
       }
 
       if (hasMatchPath(subMenu.path)) {
+        if (!subMenu.children) arr.push(getKey(subMenu))
         activeKey = subMenu.path as string
       }
     })
@@ -130,9 +131,8 @@ const SiderMenu: React.FC<SiderMenuProps> = (props) => {
   // 渲染二级菜单
   const renderMenuItem = useCallback(
     (item: MenuProps) => {
-      const onMenuItemClick = ({ menu, path, ...others }: AppRoute) => {
+      const onMenuItemClick = ({ menu, path }: AppRoute) => {
         const link = menu || path
-        console.info(others, '____________', selectedKeys)
         if (link) props.navigate(link)
       }
 
@@ -162,8 +162,6 @@ const SiderMenu: React.FC<SiderMenuProps> = (props) => {
       return renderMenuItem(route)
     })
   }, [menuData, renderMenuItem])
-
-  console.info('??', selectedKeys)
 
   return (
     <Menu

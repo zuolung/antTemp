@@ -24,4 +24,6 @@ LICENSE
 build
 plugins
 vite.config.ts
+proxy.config.ts
+antm.config.js
 

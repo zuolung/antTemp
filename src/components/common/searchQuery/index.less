@@ -1,0 +1,36 @@
+.components-search-query {
+  overflow: auto;
+  margin-bottom: 16px;
+  background: #ffffff;
+  padding: 16px;
+
+  .ant-row {
+    align-items: center;
+  }
+
+  .ant-form-item-label {
+    width: 110px;
+
+    label {
+      width: 90%;
+      word-wrap: break-word;
+      word-break: normal;
+      white-space: normal;
+      display: block;
+      height: auto;
+      letter-spacing: 1px;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  .ant-form-item-row {
+    align-items: center;
+  }
+}
+
+.ant-form-item > .ant-form-item-label {
+  flex: auto !important;
+}

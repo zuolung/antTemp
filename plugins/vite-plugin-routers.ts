@@ -129,7 +129,7 @@ async function writeRoutes() {
       rou.component.replace('@', `${CWD}/src`) + '.tsx',
       'utf-8',
     )
-    const title = getTitleFromComments(codesStr)
+    const title = getTitleFromComments(codesStr) || '--'
     if (rou) {
       routesCode += `{
         path: "${rou.path.replace(/^\/pages/, '')}",

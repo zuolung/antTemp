@@ -44,7 +44,7 @@ export default function Login(props: Project.IPageProps) {
                 swtichType={() => setLoginType('code')}
                 success={(data) => {
                   cacheSetSync('token', data.token)
-                  props.navigate('/list/index')
+                  props.navigate('/welcome')
                 }}
               />
             )}

@@ -64,14 +64,16 @@ export default defineConfig(({ mode }) => {
   }
 })
 
-function createImport(component: string) {
+function createImport(component_: string) {
+  const component = toLine(component_)
   const jsStylePath = `node_modules/antd/es/${component}/style/css.js`
-  const cssStylePath = `node_modules/antd/es/${component}/style/index.less`
-  if (fs.existsSync(join(CWD, cssStylePath))) {
-    return `import "antd/es/${component}/style/index.less"`
-  } else if (fs.existsSync(join(CWD, jsStylePath))) {
-    return `import "antd/es/${component}/style/css.js"`
+  if (fs.existsSync(join(CWD, jsStylePath))) {
+    return `import "antd/es/${component}/style/index.js"`
   } else {
     return ''
   }
+}
+
+function toLine(name) {
+  return name.replace(/([A-Z])/g, '-$1').toLowerCase()
 }

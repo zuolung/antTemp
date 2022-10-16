@@ -1,6 +1,6 @@
 export default {
   '/z': {
-    target: 'http://localhost:6767',
+    target: 'http://localhost:9999',
     changeOrigin: true,
     cookieDomainRewrite: {
       '*': '',

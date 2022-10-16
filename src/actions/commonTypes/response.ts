@@ -3,12 +3,16 @@ export type IResponseOk = {
   code: number
 }
 
-export interface IResponse<T> {
+export type IResponse<T> = {
   success: boolean
   data: T
+  /**
+   * @value 200
+   */
+  code: number
 }
 
-export type ResponsePageData<T> = IResponse<{
+export type IResponsePageData<T> = IResponse<{
   /**
    * @rule 19-19
    */
