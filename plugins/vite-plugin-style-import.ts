@@ -14,7 +14,7 @@ export default function VitePluginStyleImport({
   createImport?: (component: string) => string | undefined
 }): Plugin {
   return {
-    name: 'vite:style-import',
+    name: `vite:style-import${name}`,
     enforce: 'post',
     load: async function (id) {
       const extension = id.split('.')[1]

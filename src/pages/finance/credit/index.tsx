@@ -1,6 +1,4 @@
-/**
- * @title 信用管理
- */
+/** @title 授信管理 */
 export default function Index() {
   return 'credit-list'
 }

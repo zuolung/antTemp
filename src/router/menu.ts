@@ -5,6 +5,7 @@ export type menuSource = {
   resCode: string
   resName: string
   parentCode?: string
+  url?: string
 }
 
 export const menu: menuSource[] = [
@@ -20,21 +21,6 @@ export const menu: menuSource[] = [
         type: '2',
         children: [
           {
-            resName: '信用管理',
-            resCode: 'finance_credit',
-            parentCode: 'finance',
-            type: '2',
-            children: [
-              {
-                resName: '信用管理',
-                resCode: 'finance_credit_index',
-                parentCode: 'finance_credit',
-                type: '2',
-                children: [],
-              },
-            ],
-          },
-          {
             resName: '账户管理',
             resCode: 'finance_account',
             parentCode: 'finance',
@@ -43,7 +29,24 @@ export const menu: menuSource[] = [
               {
                 resName: '账户管理',
                 resCode: 'finance_account_index',
+                url: '/finance/account/index',
                 parentCode: 'finance_account',
+                type: '2',
+                children: [],
+              },
+            ],
+          },
+          {
+            resName: '信用管理',
+            resCode: 'finance_credit',
+            parentCode: 'finance',
+            type: '2',
+            children: [
+              {
+                resName: '信用管理',
+                resCode: 'finance_credit_index',
+                url: '/finance/credit/index',
+                parentCode: 'finance_credit',
                 type: '2',
                 children: [],
               },
@@ -66,6 +69,7 @@ export const menu: menuSource[] = [
               {
                 resName: '会员列表',
                 resCode: 'market_member_index',
+                url: '/market/member/index',
                 parentCode: 'market_member',
                 type: '2',
                 children: [],
@@ -75,6 +79,7 @@ export const menu: menuSource[] = [
           {
             resName: '渠道管理',
             resCode: 'market_channel_index',
+            url: '/market/channel/index',
             parentCode: 'market_member',
             type: '2',
           },

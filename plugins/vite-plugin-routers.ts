@@ -7,7 +7,7 @@ import { join } from 'path'
 
 const DEFAULT_PAGES = join(process.cwd(), './src/pages')
 const DEAULT_IGNORE = ['com', 'components', 'utils']
-const ROUTER_PATH = join(process.cwd(), './src/router/config.ts')
+let ROUTER_PATH = join(process.cwd(), './src/router/config.ts')
 const SRC = join(process.cwd(), './src')
 const CWD = process.cwd()
 const routersMap: string[] = []
@@ -18,13 +18,16 @@ export default function VitePluginRouters({
   watch,
   pages,
   ignore,
+  routerPath,
 }: {
   watch?: boolean
   pages?: string
   ignore?: string[]
+  routerPath?: string
 }): Plugin {
   const pages_ = pages || DEFAULT_PAGES
   const ignore_ = ignore || DEAULT_IGNORE
+  if (routerPath) ROUTER_PATH = routerPath
   const globPath = [`${pages_}/**/*.tsx`, `${pages_}/*.tsx`]
   const watchPath = globPath.concat([`${pages_}/*`, `${pages_}/*/**`])
 
@@ -60,6 +63,15 @@ function watchRouters(p: string[], ignore: string[]) {
 
   watcher.on('ready', function () {
     readyOk = true
+  })
+
+  watcher.on('change', function (path) {
+    if (readyOk) {
+      const route = path.replace(SRC, '')
+      if (path && isRouter(route, ignore)) {
+        writeRoutes()
+      }
+    }
   })
 
   watcher.on('add', function (path) {
@@ -192,7 +204,7 @@ function formatCode(codes: string) {
 }
 
 function getTitleFromComments(codeStr: string) {
-  const commentsMatch = codeStr.match(/\/\*\*[\w\W]*\*\//)
+  const commentsMatch = codeStr.match(/\/\*\*[\w\W]{4,100}\*\//)
   if (commentsMatch) {
     const commentsStr = commentsMatch[0]
     const comm: Record<string, any> = parseComments(commentsStr)
@@ -202,18 +214,27 @@ function getTitleFromComments(codeStr: string) {
 
 function parseComments(comments = '') {
   let res = {}
-  const arr = comments
-    .split('\n')
-    .filter((item) => item.includes('@'))
-    .map((item) => item.replace(/^[\s]+/g, ''))
-    .map((item) => item.replace('* ', ''))
-    .map((item) => item.replace('@', ''))
-    .map((item) => item.replace(/[\s]+/, '##'))
+  if (comments && comments.includes('\n')) {
+    const arr = comments
+      .split('\n')
+      .filter((item) => item.includes('@'))
+      .map((item) => item.replace(/^[\s]+/g, ''))
+      .map((item) => item.replace('* ', ''))
+      .map((item) => item.replace('@', ''))
+      .map((item) => item.replace(/[\s]+/, '##'))
 
-  arr.forEach((item) => {
-    const cons = item.split('##')
-    res[cons[0]] = cons[1]
-  })
+    arr.forEach((item) => {
+      const cons = item.split('##')
+      res[cons[0]] = cons[1]
+    })
+  } else if (comments) {
+    const arr = comments
+      .replace(/\/\*\*[\s]*/, '')
+      .replace(/[\s]*\*\//, '')
+      .replace('@', '')
+      .split(' ')
+    res[arr[0]] = arr[1]
+  }
 
   return res
 }

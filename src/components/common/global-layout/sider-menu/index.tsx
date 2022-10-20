@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react'
 import isArray from 'lodash/isArray'
 import { Location, NavigateFunction } from 'react-router-dom'
 import { Menu } from 'antd'
@@ -48,6 +48,7 @@ interface SiderMenuProps {
   appRoutes: AppRoute[]
   location: Location
   navigate: NavigateFunction
+  collapsed?: boolean
 }
 
 const RESOURCE_MENU_TYPE = '2'
@@ -55,7 +56,8 @@ const RESOURCE_MENU_TYPE = '2'
 const SiderMenu: React.FC<SiderMenuProps> = (props) => {
   const [openKeys, setOpenKeys] = useState<string[]>([])
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
-  const { config = [], basename, appRoutes } = props
+  const [collapseding, setCollapseding] = useState(false)
+  const { config = [], basename, appRoutes, collapsed } = props
 
   const filterMenu = useCallback(
     (data?: ResourceNode['children']) =>
@@ -163,12 +165,21 @@ const SiderMenu: React.FC<SiderMenuProps> = (props) => {
     })
   }, [menuData, renderMenuItem])
 
+  useEffect(() => {
+    if (collapsed) {
+      setCollapseding(true)
+      setTimeout(() => {
+        setCollapseding(false)
+      }, 100)
+    }
+  }, [collapsed])
+
   return (
     <Menu
       mode="inline"
       theme="dark"
       className="__global-menu"
-      openKeys={openKeys}
+      openKeys={!collapseding ? openKeys : []}
       onOpenChange={(keys) => setOpenKeys(keys as string[])}
       selectedKeys={selectedKeys}
     >
@@ -182,4 +193,4 @@ SiderMenu.defaultProps = {
   appRoutes: [],
 }
 
-export default SiderMenu
+export default memo(SiderMenu)

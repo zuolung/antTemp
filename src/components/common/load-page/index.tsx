@@ -1,8 +1,8 @@
-import React from 'react'
-import Loading from '../loading'
-import { cacheGetSync } from '@/cache'
-import Redirect from '../redirect'
+import { Component } from 'react'
 import { message } from 'antd'
+import { cacheGetSync } from '@/cache'
+import Loading from '../loading'
+import Redirect from '../redirect'
 
 type Iprops = {
   component: () => {
@@ -18,7 +18,7 @@ type IState = {
   Comp: React.FunctionComponent<Record<string, any>> | null
 }
 
-export default class RenderComponent extends React.Component<Iprops, IState> {
+export default class RenderComponent extends Component<Iprops, IState> {
   constructor(args: any) {
     super(args)
     this.state = {
@@ -30,7 +30,7 @@ export default class RenderComponent extends React.Component<Iprops, IState> {
     this.loadData()
   }
 
-  async componentWillReceiveProps(nextProps: Iprops) {
+  async UNSAFE_componentWillReceiveProps(nextProps: Iprops) {
     if (nextProps.component && this.props.path !== nextProps.path) {
       const res = await nextProps.component()
       this.setState({
@@ -52,6 +52,7 @@ export default class RenderComponent extends React.Component<Iprops, IState> {
     if (Comp) {
       return <Comp {...oprops} />
     } else {
+      document.title = '加载中...'
       return <Loading />
     }
   }

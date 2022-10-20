@@ -103,6 +103,7 @@ export type accountDetail = {
  */
 export type addOrUpdate = {
   request: {
+    id?: number
     /**
      * 合资公司/代理商/合作伙伴
      */

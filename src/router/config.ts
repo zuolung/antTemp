@@ -15,7 +15,7 @@ export default [
     path: '/finance/credit/index',
     component: () => import('@/pages/finance/credit/index'),
     resCode: 'finance_credit_index',
-    title: '信用管理',
+    title: '授信管理',
   },
   {
     path: '/login/index',

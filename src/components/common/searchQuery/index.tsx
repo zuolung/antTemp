@@ -41,7 +41,7 @@ export interface SearchConfig {
   key: string | any
   /** 时间日期等组件的格式 */
   format?: string
-  /** 1200宽度表单项在24份中的宽度值 */
+  /** 1200宽度以上表单项在24份中的宽度值 */
   col?: number
   label?: string
   options?: TKeyValueType[]
@@ -358,7 +358,9 @@ function SearchQuery(props: ISearchQuery) {
               <Col
                 xl={config.col || 8}
                 lg={12}
-                md={24}
+                md={12}
+                sm={24}
+                xs={24}
                 key={config.key[0]}
                 style={{ marginBottom: '24px' }}
               >
@@ -379,7 +381,9 @@ function SearchQuery(props: ISearchQuery) {
             <Col
               xl={config.col || 8}
               lg={12}
-              md={24}
+              md={12}
+              sm={24}
+              xs={24}
               key={config.key}
               style={{ marginBottom: '24px' }}
             >

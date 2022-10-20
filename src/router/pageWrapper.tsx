@@ -5,8 +5,8 @@ import ErrorBoundary from '@/components/common/error-boundary'
 import { commonStore, userInfoStore } from '@/store/index'
 import { GlobalLayout } from '@/components/common'
 import { userInfoCommon } from '@/actions/actions/common'
-import routersConfig from './config'
 import { queryToObj } from '@/utils/common/query'
+import routersConfig from './config'
 import { menu } from './menu'
 
 export default function PageWrapper({
@@ -51,18 +51,18 @@ export default function PageWrapper({
   }
 
   return (
-    <ErrorBoundary setError={setError}>
-      <GlobalLayout
-        basename={baseName}
-        user={userInfo}
-        appRoutes={routersConfig}
-        resourceTree={menu || []}
-        extraProps={{
-          onTabChange: (e) => {
-            setBaseName(e.resCode)
-          },
-        }}
-      >
+    <GlobalLayout
+      basename={baseName}
+      user={userInfo}
+      appRoutes={routersConfig}
+      resourceTree={menu || []}
+      extraProps={{
+        onTabChange: (e) => {
+          setBaseName(e.resCode)
+        },
+      }}
+    >
+      <ErrorBoundary setError={setError}>
         {cloneElement(children as any, {
           navigate,
           location: {
@@ -71,7 +71,7 @@ export default function PageWrapper({
           },
           setError,
         })}
-      </GlobalLayout>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </GlobalLayout>
   )
 }

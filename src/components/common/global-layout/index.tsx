@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import classnames from 'classnames'
 import { Layout } from 'antd'
-import Breadcrumb from './breadcrumb'
+import { useRecoilState } from 'recoil'
+import { commonStore } from '@/store'
 import GlobalHeader, { User, ExtraProps, ThemeConfig } from './global-header'
 import SiderMenu, { ResourceNode, AppRoute } from './sider-menu'
-import { computedBreadcrumbParams } from './utils'
-
 import './style.less'
 
 interface GlobalLayoutProps {
@@ -23,6 +22,8 @@ interface GlobalLayoutProps {
   /** 额外的配置参数 */
   extraProps?: ExtraProps
   children?: React.ReactNode
+  /** 应用类型：正常或微应用 */
+  appType?: 'normal' | 'micro'
 }
 
 const GlobalLayout: React.FC<GlobalLayoutProps> = (props) => {
@@ -34,20 +35,23 @@ const GlobalLayout: React.FC<GlobalLayoutProps> = (props) => {
     theme,
     extraProps,
     children,
+    appType = 'normal',
   } = props
 
   const navigate = useNavigate()
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(false)
+  const [common, setCommon] = useRecoilState(commonStore)
 
-  // 获取面包屑列表
-  const breadcrumbInfo = computedBreadcrumbParams({
-    resourceTree,
-    appRoutes,
-    basename,
-    pathname: location.pathname,
-  })
-  const { breadcrumbConfig, title } = breadcrumbInfo
+  useEffect(
+    function () {
+      setCommon({
+        ...common,
+        menuCollapsed: collapsed,
+      })
+    },
+    [collapsed],
+  )
 
   const mainContentCls = classnames('__main-content', { collapsed })
 
@@ -60,7 +64,11 @@ const GlobalLayout: React.FC<GlobalLayoutProps> = (props) => {
           config={resourceTree}
           theme={theme}
           collapsed={collapsed}
-          onCollapsed={() => setCollapsed(!collapsed)}
+          appType={appType}
+          onCollapsed={(e) => {
+            setCollapsed(e)
+          }}
+          location={location}
           extraProps={extraProps}
           navigate={navigate}
         />
@@ -73,12 +81,10 @@ const GlobalLayout: React.FC<GlobalLayoutProps> = (props) => {
             basename={basename}
             navigate={navigate}
             location={location}
+            collapsed={collapsed}
           />
         </Layout.Sider>
         <Layout className={mainContentCls}>
-          <Layout.Header className="__breadcrumb-header">
-            <Breadcrumb title={title} config={breadcrumbConfig} />
-          </Layout.Header>
           <Layout.Content>{children}</Layout.Content>
         </Layout>
       </Layout>
@@ -91,5 +97,5 @@ GlobalLayout.defaultProps = {
   appRoutes: [],
 }
 
-export default GlobalLayout
-export { GlobalHeader, SiderMenu, Breadcrumb }
+export default memo(GlobalLayout)
+export { GlobalHeader, SiderMenu }

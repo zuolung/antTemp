@@ -71,3 +71,13 @@ export function computedBreadcrumbParams(props: ComputedBreadcrumbProps): {
     title: breadcrumbTitle as any,
   }
 }
+
+export function findChild0Url(data) {
+  if (data.children[0] && data.children[0].url) {
+    return data.children[0].url
+  } else if (data.children[0]) {
+    return findChild0Url(data.children[0])
+  } else {
+    return ''
+  }
+}

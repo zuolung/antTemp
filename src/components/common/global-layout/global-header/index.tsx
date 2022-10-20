@@ -8,9 +8,10 @@ import {
   CaretDownOutlined,
   RightOutlined,
 } from '@ant-design/icons'
-import { NavigateFunction } from 'react-router-dom'
+import { NavigateFunction, Location } from 'react-router-dom'
 import { MenuInfo } from 'rc-menu/lib/interface'
 import { ResourceNode } from '../sider-menu'
+import { findChild0Url } from '../utils'
 
 import './style.less'
 
@@ -77,6 +78,9 @@ interface GlobalHeaderProps {
   /** 主题配置对象 */
   theme?: ThemeConfig
   navigate: NavigateFunction
+  location: Location
+  /** 应用类型：正常或微应用 */
+  appType?: 'normal' | 'micro'
 }
 
 // 开启动态主题后，antd-theme-webpack-plugin 会在 index.html 内注入 less 文件，因此 window 对象上会添加 less 的相关方法，因此在此处兼容 less 的类型
@@ -109,6 +113,8 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = (props) => {
     user,
     config = [],
     theme = {},
+    appType = 'normal',
+    navigate,
   } = props
 
   const themeApplied = useRef(false)
@@ -140,6 +146,21 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = (props) => {
     return [headers]
   }, [config])
 
+  const jumpPath = useCallback(
+    function (url, replace?: boolean) {
+      if (appType === 'normal') {
+        navigate(url, { replace })
+      } else {
+        if (replace) {
+          window.location.replace(url)
+        } else {
+          window.location.href = url
+        }
+      }
+    },
+    [appType],
+  )
+
   // 线上环境且传入了主题变量对象才开启菜单
   if (enableDynamicTheme) {
     if (!extraProps.dropdownMenus?.find((item) => item.key === 'dark-theme')) {
@@ -167,10 +188,24 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = (props) => {
     }
   }, [themeApplied, themeVars, enableDynamicTheme])
 
-  const tabChange = (key) => {
+  useEffect(function () {
+    /** 微应用不执行, 可使用 ExtraProps.onTabChange 自行切换url */
+    if (appType === 'normal') {
+      const currentResCode = location.pathname.split('/')[1] || ''
+      tabChange(currentResCode, true)
+    }
+  }, [])
+
+  const tabChange = (key, notChangeUrl?: boolean) => {
     const current = memoConfig.find((v) => v.resCode === key)
     if (extraProps.onTabChange) {
       extraProps.onTabChange(current as ResourceNode)
+    }
+    if (!notChangeUrl) {
+      const redirectUrl = findChild0Url(current)
+      if (redirectUrl) {
+        jumpPath(redirectUrl)
+      }
     }
   }
 
@@ -279,7 +314,7 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = (props) => {
           key="logo"
           onClick={() => {
             const host = window.location.host
-            host && props.navigate('/')
+            host && jumpPath('/')
           }}
         >
           <div className="logo-con">
@@ -298,19 +333,17 @@ const GlobalHeader: React.FC<GlobalHeaderProps> = (props) => {
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </div>
         )}
-        {activeKey && (
-          <div className="system-tabs">
-            <Tabs
-              activeKey={activeKey}
-              onChange={tabChange}
-              className="tab-header"
-            >
-              {memoConfig.map(({ resCode, resName }) => {
-                return <Tabs.TabPane key={resCode} tab={resName} />
-              })}
-            </Tabs>
-          </div>
-        )}
+        <div className="system-tabs">
+          <Tabs
+            activeKey={activeKey}
+            onChange={tabChange}
+            className="tab-header"
+          >
+            {memoConfig.map(({ resCode, resName }) => {
+              return <Tabs.TabPane key={resCode} tab={resName} />
+            })}
+          </Tabs>
+        </div>
       </div>
       {user ? (
         <div className="header-right">

@@ -1,12 +1,12 @@
-/**
- * @title 账户管理
- */
+/** @title 账户管理 */
 import { useEffect, useState } from 'react'
-import { Table, TableColumnsType } from 'antd'
+import { Button, Table, TableColumnsType } from 'antd'
 import moment from 'moment'
 import { SearchQuery } from '@/components/common'
 import { accountListAccount } from '@/actions/actions/account'
 import { accountList } from '@/actions/types/account'
+import PageTitle from '@/components/common/page-title'
+import EditModal from './com/edit-modal'
 
 export default function Index(props: Project.IPageProps) {
   const { location } = props
@@ -14,6 +14,7 @@ export default function Index(props: Project.IPageProps) {
     accountList['response']['data']['list']
   >([])
   const [loading, setLoading] = useState(false)
+  const [visibleId, setVisibleId] = useState<number>()
   const [pagination, setPagination] = useState({
     pageSize: 20,
     pageNo: 1,
@@ -77,7 +78,7 @@ export default function Index(props: Project.IPageProps) {
     },
     {
       title: '操作',
-      width: 120,
+      width: 200,
       fixed: 'right',
       render: (re) => (
         <div>
@@ -88,13 +89,24 @@ export default function Index(props: Project.IPageProps) {
           >
             查看详情
           </span>
+          <span onClick={() => setVisibleId(re.id)}>编辑</span>
         </div>
       ),
     },
   ]
 
   return (
-    <div className="pages-">
+    <div className="pages-account-index">
+      <PageTitle title="账户管理" />
+      <EditModal
+        visible={visibleId}
+        oncancel={() => setVisibleId(undefined)}
+        refresh={() => {
+          searchData({
+            pageNo: 1,
+          })
+        }}
+      />
       <SearchQuery
         className="search-box"
         fetchData={handleSearch}
@@ -117,6 +129,9 @@ export default function Index(props: Project.IPageProps) {
           },
         ]}
       />
+      <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+        <Button onClick={() => setVisibleId(-1)}>新增</Button>
+      </div>
       <Table
         style={{ marginTop: 10 }}
         dataSource={listData}
