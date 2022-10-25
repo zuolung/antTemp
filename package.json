@@ -12,7 +12,7 @@
     "start": "yarn dev",
     "dev": "vite",
     "build": "vite build",
-    "mock": "antm-api watch --path ./src/actions/types --mock true --server true --action true",
+    "mock": "antm-api watch --path ./src/actions/types --mock true  --action true",
     "page-server": "npx ts-node ./src/components/page-insert/server.ts"
   },
   "keywords": [],

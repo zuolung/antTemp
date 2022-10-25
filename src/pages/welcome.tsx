@@ -1,8 +1,8 @@
-import PageTitle from '@/components/common/page-title'
-
 /**
  * @title 欢迎
  */
+import PageTitle from '@/components/common/page-title'
+
 export default function Index() {
   return (
     <div className="pages-welcome">

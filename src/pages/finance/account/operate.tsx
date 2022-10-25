@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+/** @title  */
+import { useEffect } from "react"
 import {
   Form,
   Input,
@@ -7,15 +8,16 @@ import {
   Button,
   Select,
   DatePicker,
+  InputNumber,
   message,
-} from 'antd'
-import { accountDetailAccount } from '@/actions/actions/account'
+} from "antd"
+import { accountDetailDemo, addOrUpdateDemo } from "@/actions/actions/demo"
 import {
   ModuleBox,
   PageTitle,
   FooterButton,
   UploadImage,
-} from '@/components/common'
+} from "@/components/common"
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -37,14 +39,25 @@ export default function Index(props: Project.IPageProps) {
   const searchData = async () => {
     const query = { id }
     if (!query.id) return
-    const res = await accountDetailAccount(query)
+    const res = await accountDetailDemo(query)
     form.setFieldsValue(res.data)
   }
 
   const submit = function () {
     form
       .validateFields()
-      .then((res) => {})
+      .then(async (data) => {
+        const params = {
+          ...data,
+          id,
+        }
+        const res = await addOrUpdateDemo(params)
+        if (res.success) {
+          message.success(res.message || "操作成功")
+        } else {
+          message.error(res.message || "服务异常")
+        }
+      })
       .catch((err) => {
         if (err.errorFields) message.error(err.errorFields[0].errors)
       })
@@ -57,17 +70,23 @@ export default function Index(props: Project.IPageProps) {
       labelCol={{ span: 5 }}
       wrapperCol={{ span: 19 }}
     >
-      <PageTitle title={`账户${id ? '编辑' : '新增'}`} />
+      <PageTitle title={`页面${id ? "编辑" : "新增"}`} />
       <FooterButton showBack>
         <Button type="primary" onClick={submit}>
-          {id ? '编辑' : '新增'}
+          {id ? "编辑" : "新增"}
         </Button>
       </FooterButton>
       <ModuleBox title="基础信息">
-        <Row style={{ alignItems: 'center' }}>
+        <Row>
           <Col {...colProps}>
             <FormItem label="用户名称" name="name" rules={[{ required: true }]}>
               <Input placeholder="请输入" />
+            </FormItem>
+          </Col>
+
+          <Col {...colProps}>
+            <FormItem label="数字输入" name="num" rules={[{ required: true }]}>
+              <InputNumber placeholder="请输入" />
             </FormItem>
           </Col>
 
@@ -80,7 +99,7 @@ export default function Index(props: Project.IPageProps) {
                 () => ({
                   validator(_, value) {
                     const MAX = 9999999
-                    const rtNumber = String(value).split('.')[1]
+                    const rtNumber = String(value).split(".")[1]
                     if (
                       value <= MAX &&
                       (!rtNumber || rtNumber.length < 3) &&
@@ -92,10 +111,10 @@ export default function Index(props: Project.IPageProps) {
                       return Promise.reject(new Error(`不能大于${MAX}`))
                     }
                     if (rtNumber && rtNumber.length > 2) {
-                      return Promise.reject(new Error('小数点位数不能大于2位'))
+                      return Promise.reject(new Error("小数点位数不能大于2位"))
                     }
                     if (value < 0) {
-                      return Promise.reject(new Error('不能为负数'))
+                      return Promise.reject(new Error("不能为负数"))
                     }
                     return Promise.resolve()
                   },
@@ -121,7 +140,7 @@ export default function Index(props: Project.IPageProps) {
           <Col {...colProps}>
             <FormItem
               label="日期选择"
-              name="dateTimePicker"
+              name="timePicker"
               rules={[{ required: true }]}
             >
               <DatePicker />
@@ -131,17 +150,7 @@ export default function Index(props: Project.IPageProps) {
           <Col {...colProps}>
             <FormItem
               label="范围日期"
-              name="rangeTimePicker"
-              rules={[{ required: true }]}
-            >
-              <RangePicker />
-            </FormItem>
-          </Col>
-
-          <Col {...colProps}>
-            <FormItem
-              label="范围日期"
-              name="rangeTimePicker"
+              name="rangePicker"
               rules={[{ required: true }]}
             >
               <RangePicker />

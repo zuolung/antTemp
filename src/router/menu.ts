@@ -28,8 +28,8 @@ export const menu: menuSource[] = [
             children: [
               {
                 resName: '账户管理',
-                resCode: 'finance_account_index',
-                url: '/finance/account/index',
+                resCode: 'finance_account_list',
+                url: '/finance/account/list',
                 parentCode: 'finance_account',
                 type: '2',
                 children: [],
