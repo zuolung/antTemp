@@ -1,7 +1,7 @@
-/** @title 账户详情 */
+/** @title <%= detail.pageTitle %> */
 import { useEffect, useState } from 'react'
-import { accountDetailAccount } from '@/actions/actions/account'
-import { accountDetail } from '@/actions/types/account'
+import { accountDetailDemo } from '@/actions/actions/demo'
+import { accountDetail } from '@/actions/types/demo'
 import { DetailBox } from '@/components/common'
 import { PageTitle, FooterButton } from '@/components/common'
 
@@ -9,7 +9,7 @@ export default function Detail(props: Project.IPageProps) {
   const [data, setData] = useState<accountDetail['response']['data']>()
 
   const getDetailData = async function () {
-    const res = await accountDetailAccount({ id: props.location.query['id'] })
+    const res = await accountDetailDemo({ id: props.location.query['id'] })
     if (res.success) {
       setData(res.data)
     }
@@ -21,7 +21,7 @@ export default function Detail(props: Project.IPageProps) {
 
   return (
     <>
-      <PageTitle title="账户详情" />
+      <PageTitle title="<%= detail.pageTitle %>" />
       <FooterButton showBack />
       <DetailBox
         title="账户基本信息"

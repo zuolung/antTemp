@@ -6,6 +6,7 @@ import { commonStore, userInfoStore } from '@/store/index'
 import { GlobalLayout } from '@/components/common'
 import { userInfoCommon } from '@/actions/actions/common'
 import { queryToObj } from '@/utils/common/query'
+import PageInsert from '@/components/page-insert'
 import routersConfig from './config'
 import { menu } from './menu'
 
@@ -58,7 +59,7 @@ export default function PageWrapper({
       resourceTree={menu || []}
       extraProps={{
         onTabChange: (e) => {
-          setBaseName(e.resCode)
+          if (e) setBaseName(e.resCode)
         },
       }}
     >
@@ -71,6 +72,7 @@ export default function PageWrapper({
           },
           setError,
         })}
+        <PageInsert />
       </ErrorBoundary>
     </GlobalLayout>
   )

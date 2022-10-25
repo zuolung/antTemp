@@ -25,7 +25,7 @@ export type TKeyValueType = {
   key: string | number
   value: string
 }
-export interface SearchConfig {
+export interface SearchConfig<T> {
   /** 对应type传给数据录入组件的props */
   props?: Record<string, any>
   /** 数据录入组件的类型 */
@@ -38,7 +38,7 @@ export interface SearchConfig {
     | 'input'
     | 'select'
   /** 字段名称 */
-  key: string | any
+  key: keyof T | string[]
   /** 时间日期等组件的格式 */
   format?: string
   /** 1200宽度以上表单项在24份中的宽度值 */
@@ -48,9 +48,9 @@ export interface SearchConfig {
   showSearch?: boolean
   defaultValue?: any
 }
-export interface ISearchQuery {
+export interface ISearchQuery<T> {
   /** 搜索项配置 */
-  searchConfig: SearchConfig[]
+  searchConfig: SearchConfig<T>[]
   /** 默认搜索数据 */
   searchData?: object
   /** 搜索方法, 返回false的时候不向地址加入请求参数 */
@@ -64,7 +64,7 @@ export interface ISearchQuery {
   className?: string
 }
 
-function SearchQuery(props: ISearchQuery) {
+function SearchQuery<T>(props: ISearchQuery<T>) {
   const location: any = useLocation()
   const navigate = useNavigate()
   const [form] = Form.useForm()
@@ -109,7 +109,7 @@ function SearchQuery(props: ISearchQuery) {
 
   searchConfig.map((item) => {
     const { key, type } = item
-    let currentKey = key
+    let currentKey = key as string
     if (type === 'rangePicker') {
       currentKey = key[0]
     }
@@ -225,7 +225,7 @@ function SearchQuery(props: ISearchQuery) {
     searchConfig.map((item) => {
       const { key, type } = item
 
-      let currentKey = key
+      let currentKey = key as string
       if (type === 'rangePicker') {
         currentKey = key[0]
       }
@@ -249,7 +249,13 @@ function SearchQuery(props: ISearchQuery) {
       format,
     } = config
     if (type === 'input') {
-      return <Input placeholder={placeholder || `请输入${label}`} {...props} />
+      return (
+        <Input
+          allowClear
+          placeholder={placeholder || `请输入${label}`}
+          {...props}
+        />
+      )
     } else if (type === 'select') {
       const opts =
         options &&
@@ -265,6 +271,7 @@ function SearchQuery(props: ISearchQuery) {
         })
       return showSearch ? (
         <Select
+          allowClear
           showSearch
           placeholder={`请选择${label}`}
           onSelect={(val) => onSelect && handleCurFormData(val, config)}
@@ -279,6 +286,7 @@ function SearchQuery(props: ISearchQuery) {
         </Select>
       ) : (
         <Select
+          allowClear
           placeholder={`请选择${label}`}
           {...props}
           onSelect={(val) => onSelect && handleCurFormData(val, config)}
@@ -289,6 +297,7 @@ function SearchQuery(props: ISearchQuery) {
     } else if (type === 'timePicker') {
       return (
         <DatePicker
+          allowClear
           {...props}
           format={format || DATA_FORMAT}
           placeholder="请选择"
@@ -297,6 +306,7 @@ function SearchQuery(props: ISearchQuery) {
     } else if (type === 'monthPicker') {
       return (
         <MonthPicker
+          allowClear
           {...props}
           format={format || DATA_FORMAT}
           placeholder="请选择"
@@ -305,6 +315,7 @@ function SearchQuery(props: ISearchQuery) {
     } else if (type === 'rangePicker') {
       return (
         <RangePicker
+          allowClear
           {...props}
           placeholder={['开始时间', '结束时间']}
           format={format || DATA_FORMAT}
@@ -313,6 +324,7 @@ function SearchQuery(props: ISearchQuery) {
     } else if (type === 'cascader') {
       return (
         <Cascader
+          allowClear
           {...props}
           options={options}
           placeholder={`请选择${label}`}
@@ -350,6 +362,8 @@ function SearchQuery(props: ISearchQuery) {
       layout="inline"
       className="components-search-query"
       ref={props.searchRef}
+      labelCol={{ span: 5 }}
+      wrapperCol={{ span: 19 }}
     >
       <Row style={{ width: '100%' }}>
         {searchConfig.map((config) => {
@@ -372,6 +386,7 @@ function SearchQuery(props: ISearchQuery) {
                     }
                     format={config.format || DATA_FORMAT}
                     style={{ width: '100%' }}
+                    allowClear
                   />
                 </FormItem>
               </Col>
@@ -384,10 +399,10 @@ function SearchQuery(props: ISearchQuery) {
               md={12}
               sm={24}
               xs={24}
-              key={config.key}
+              key={config.key as string}
               style={{ marginBottom: '24px' }}
             >
-              <FormItem label={config.label} name={config.key}>
+              <FormItem label={config.label} name={config.key as string}>
                 {renderItem(config)}
               </FormItem>
             </Col>

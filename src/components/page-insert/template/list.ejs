@@ -1,14 +1,13 @@
-/** @title 账户管理 */
+/** @title <%= list.pageTitle %> */
 import { useEffect, useState } from 'react'
-import { Button, Table, TableColumnsType } from 'antd'
-import moment from 'moment'
+import { Button, Table, TableColumnsType, Modal, message } from 'antd'
 import { SearchQuery, PageTitle } from '@/components/common'
-import { accountListAccount } from '@/actions/actions/account'
-import { accountListItem, accountListParams } from '@/actions/types/account'
+import { accountListDemo, deleteItemDemo } from '@/actions/actions/demo'
+import { IaccountListItem, IaccountListParams } from '@/actions/types/demo'
 
 export default function Index(props: Project.IPageProps) {
   const { location, navigate } = props
-  const [listData, setListData] = useState<accountListItem[]>([])
+  const [listData, setListData] = useState<IaccountListItem[]>([])
   const [loading, setLoading] = useState(false)
   const [pagination, setPagination] = useState({
     pageSize: 20,
@@ -25,7 +24,7 @@ export default function Index(props: Project.IPageProps) {
 
   const searchData = async (po) => {
     setLoading(true)
-    const res = await accountListAccount({ ...pagination, ...po })
+    const res = await accountListDemo({ ...pagination, ...po })
     setListData(res.data.list)
     setLoading(false)
     setPagination({
@@ -48,24 +47,44 @@ export default function Index(props: Project.IPageProps) {
       ...params,
     })
   }
-
-  const columns: TableColumnsType<accountListItem> = [
+  <% if (list.table.includes("wordScale")) { %>
+  const showWordDetail = (val, name) => {
+    Modal.success({
+      title: `查看${name}`,
+      content: val
+    })
+  }
+  <% } %>
+  <% if (list.table.includes('delete')) { %>
+  const handleDelete = (record) => {
+    Modal.confirm({
+      title: "确认删除",
+      content: "删除后数据不可恢复！",
+      onOk: async () => {
+        await deleteItemDemo({ id: record.id })
+        message.success('操作成功')
+        searchData({})
+      }
+    })
+  }
+  <% } %>
+  const columns: TableColumnsType<IaccountListItem> = [
     {
       title: '用户名称',
       dataIndex: 'name',
     },
-    {
-      title: '账户金额',
-      dataIndex: 'amount',
-      render: (val) => val,
-    },
+    <% if (list.table.includes('wordScale')) { %> {
+      title: '备注',
+      dataIndex: 'remark',
+      render: (val) => {
+        if (val.length < 8) {
+          return val
+        } else return <span onClick={() => showWordDetail(val, '备注')}>{val.substring(0, 8)}...</span>
+      },
+    }, <% } %>
     {
       title: '创建时间',
       dataIndex: 'createTime',
-      render: (val) =>
-        typeof val === 'number'
-          ? moment(val).format('YYYY-MM-DD HH:mm:ss')
-          : val,
     },
     {
       title: '操作',
@@ -73,11 +92,14 @@ export default function Index(props: Project.IPageProps) {
       fixed: 'right',
       render: (re) => (
         <div>
-          <span onClick={() => navigate(`/finance/account/detail?id=${re.id}`)}>
+          <% if (list.table.includes('delete')) { %> <span onClick={() => handleDelete(re)}>
+            删除
+          </span> <% } %>
+          <span onClick={() => navigate(`<%= target.replace('/src/pages','') %>/<%= addDir %>/detail?id=${re.id}`)}>
             查看详情
           </span>
           <span
-            onClick={() => navigate(`/finance/account/operate?id=${re.id}`)}
+            onClick={() => navigate(`<%= target.replace('/src/pages','') %>/<%= addDir %>/operate?id=${re.id}`)}
           >
             编辑
           </span>
@@ -88,52 +110,60 @@ export default function Index(props: Project.IPageProps) {
 
   return (
     <div className="pages-account-index">
-      <PageTitle title="账户管理" />
-      <SearchQuery<accountListParams>
+      <PageTitle title="<%= list.pageTitle %>" />
+      <SearchQuery<IaccountListParams>
         className="search-box"
         fetchData={handleSearch}
         searchData={pagination}
         searchConfig={[
-          {
+          <% if (list.search.includes('input')) { %> {
             key: 'name',
             label: '用户名称',
             type: 'input',
-          },
-          {
+          },  <% } %>
+          <% if (list.search.includes('select')) { %>  {
             key: 'select',
             label: '下拉搜索',
             type: 'select',
             options: [{ value: '选项1', key: 'key1' }],
-          },
-          {
+          }, <% } %>
+          <% if (list.search.includes('timePicker')) { %> {
             key: 'time',
             label: '日期选择',
             type: 'timePicker',
             format: 'YYYY-MM-DD HH:mm:ss',
-          },
-          {
+          }, <% } %>
+          <% if (list.search.includes('monthPicker')) { %> {
             key: 'month',
             label: '月份选择',
             type: 'monthPicker',
             format: 'YYYY-MM',
-          },
-          {
+          },  <% } %>
+           <% if (list.search.includes('rangePicker')) { %> {
             key: ['creatTime', 'creatTimeStart', 'creatTimeEnd'],
             label: '创建时间',
             type: 'rangePicker',
-          },
-          {
+          }, <% } %>
+          <% if (list.search.includes('treeSelect')) { %> {
             key: 'treeSelect',
             label: '树选择',
             type: 'treeSelect',
             props: {
               treeData: [],
             },
-          },
+          }, <% } %>
+          <% if (list.search.includes('cascader')) { %> {
+            key: 'cascader',
+            label: '树选择',
+            type: 'cascader',
+            props: {
+              options: [],
+            },
+          }, <% } %>
         ]}
       />
       <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-        <Button onClick={() => navigate('/finance/account/operate')}>
+        <Button onClick={() => navigate('<%= target.replace('/src/pages','') %>/<% addDir %>/operate')}>
           新增
         </Button>
       </div>

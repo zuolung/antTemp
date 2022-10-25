@@ -1,4 +1,6 @@
 import { Col, Row } from 'antd'
+import { ReactNode } from 'react'
+import BaseBox from '../module-box'
 import './index.less'
 
 type IDataItem = {
@@ -16,21 +18,26 @@ type IDataItem = {
 
 type IProps = {
   /** 详情模块标题 */
-  title?: string | JSX.Element
+  title?: ReactNode
   /** 详情渲染数据 */
   dataSource: Array<IDataItem>
   /** 默认栅格项宽度，默认为8 */
   defaultItemWidth?: 6 | 8 | 12 | 24 | 16
+  renderHeaderRight?: ReactNode
 }
 
 export default function DetailPage({
-  title = '',
+  title,
   dataSource,
   defaultItemWidth = 8,
+  renderHeaderRight,
 }: IProps): JSX.Element {
   return (
-    <div className="components-defail-box">
-      {title ? <div className="detail-title">{title}</div> : ''}
+    <BaseBox
+      className="components-defail-box"
+      title={title}
+      renderHeaderRight={renderHeaderRight}
+    >
       <Row className="detail-body" gutter={24}>
         {(dataSource || []).map((d, index) => {
           if (d.hideen) return ''
@@ -55,6 +62,6 @@ export default function DetailPage({
           )
         })}
       </Row>
-    </div>
+    </BaseBox>
   )
 }

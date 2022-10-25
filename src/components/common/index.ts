@@ -7,6 +7,10 @@ import Redirect from './redirect'
 import GlobalLayout from './global-layout'
 import SearchQuery from './searchQuery'
 import DetailBox from './detail-box'
+import PageTitle from './page-title'
+import FooterButton from './footer-button'
+import ModuleBox from './module-box'
+import UploadImage from './upload/upload-image'
 
 export {
   LoadPage,
@@ -18,4 +22,8 @@ export {
   GlobalLayout,
   SearchQuery,
   DetailBox,
+  PageTitle,
+  FooterButton,
+  ModuleBox,
+  UploadImage,
 }

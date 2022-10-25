@@ -1,6 +1,7 @@
 export type IResponseOk = {
   success: boolean
   code: number
+  message?: string
 }
 
 export type IResponse<T> = {
@@ -33,6 +34,6 @@ export type IResponsePageData<T> = IResponse<{
 }>
 
 export type IPaginationParams = {
-  pageSize: number
-  pageNo: number
+  pageSize?: number
+  pageNo?: number
 }

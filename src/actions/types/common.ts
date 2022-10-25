@@ -44,3 +44,19 @@ export type userInfo = {
     success: boolean
   }
 }
+
+/**
+ * 用户信息
+ * @url /z/api/1.0/uploadImage
+ * @method POST
+ */
+export type uploadImage = {
+  request: Record<string, any>
+  response: {
+    /**
+     * @value "@Image('100x100','@color','小甜甜')"
+     */
+    data: string
+    success: boolean
+  }
+}

@@ -11,11 +11,12 @@ type Iprops = {
   noTokenPages: string[]
   path: string
   redirect: string
-  title?: string
+  title: string
 } & Record<string, any>
 
 type IState = {
   Comp: React.FunctionComponent<Record<string, any>> | null
+  originTitle?: string
 }
 
 export default class RenderComponent extends Component<Iprops, IState> {
@@ -23,7 +24,14 @@ export default class RenderComponent extends Component<Iprops, IState> {
     super(args)
     this.state = {
       Comp: null,
+      originTitle: '',
     }
+  }
+
+  UNSAFE_componentWillMount(): void {
+    this.setState({
+      originTitle: document.title,
+    })
   }
 
   componentDidMount(): void {
@@ -47,9 +55,10 @@ export default class RenderComponent extends Component<Iprops, IState> {
   }
 
   result(): JSX.Element {
-    const { Comp } = this.state
+    const { Comp, originTitle } = this.state
     const { component, noTokenPages, redirect, ...oprops } = this.props
     if (Comp) {
+      document.title = originTitle || '-'
       return <Comp {...oprops} />
     } else {
       document.title = '加载中...'

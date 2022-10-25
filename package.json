@@ -12,7 +12,8 @@
     "start": "yarn dev",
     "dev": "vite",
     "build": "vite build",
-    "mock": "antm-api watch --path ./src/actions/types --mock true --server true --action true"
+    "mock": "antm-api watch --path ./src/actions/types --mock true --server true --action true",
+    "page-server": "npx ts-node ./src/components/page-insert/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,13 +27,16 @@
     "axios": "^1.0.0",
     "dayjs": "^1.11.5",
     "eslint": "8.21.0",
+    "node-dir-tree": "^0.2.0",
+    "node-ts": "^5.1.2",
     "path-to-regexp": "^6.2.1",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-document-title": "^2.0.3",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
-    "recoil": "^0.7.5"
+    "recoil": "^0.7.5",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@antmjs/eslint": "^2.1.0",
