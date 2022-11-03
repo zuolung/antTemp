@@ -1,6 +1,8 @@
 export type menuSource = {
+  /** 项目 basename */
   baseName?: string
   children?: menuSource[] | null
+  /** 资源类型 1:系统 2:菜单 3:功能 */
   type?: '0' | '1' | '2'
   resCode: string
   resName: string

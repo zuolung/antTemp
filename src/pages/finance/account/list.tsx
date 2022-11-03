@@ -1,9 +1,9 @@
 /** @title 管理列表 */
-import { useEffect, useState } from "react"
-import { Button, Table, TableColumnsType, Modal, message } from "antd"
-import { SearchQuery, PageTitle } from "@/components/common"
-import { accountListDemo, deleteItemDemo } from "@/actions/actions/demo"
-import { IaccountListItem, IaccountListParams } from "@/actions/types/demo"
+import { useEffect, useState } from 'react'
+import { Button, Table, TableColumnsType, Modal, message } from 'antd'
+import { SearchQuery, PageTitle } from '@/components/common'
+import { accountListDemo, deleteItemDemo } from '@/actions/actions/demo'
+import { IaccountListItem, IaccountListParams } from '@/actions/types/demo'
 
 export default function Index(props: Project.IPageProps) {
   const { location, navigate } = props
@@ -57,11 +57,11 @@ export default function Index(props: Project.IPageProps) {
 
   const handleDelete = (record) => {
     Modal.confirm({
-      title: "确认删除",
-      content: "删除后数据不可恢复！",
+      title: '确认删除',
+      content: '删除后数据不可恢复！',
       onOk: async () => {
         await deleteItemDemo({ id: record.id })
-        message.success("操作成功")
+        message.success('操作成功')
         searchData({})
       },
     })
@@ -69,31 +69,34 @@ export default function Index(props: Project.IPageProps) {
 
   const columns: TableColumnsType<IaccountListItem> = [
     {
-      title: "用户名称",
-      dataIndex: "name",
+      title: '用户名称',
+      dataIndex: 'name',
     },
     {
-      title: "备注",
-      dataIndex: "remark",
+      title: '备注',
+      dataIndex: 'remark',
       render: (val) => {
         if (val.length < 8) {
           return val
         } else
           return (
-            <span onClick={() => showWordDetail(val, "备注")}>
+            <span
+              className="primary-color"
+              onClick={() => showWordDetail(val, '备注')}
+            >
               {val.substring(0, 8)}...
             </span>
           )
       },
     },
     {
-      title: "创建时间",
-      dataIndex: "createTime",
+      title: '创建时间',
+      dataIndex: 'createTime',
     },
     {
-      title: "操作",
+      title: '操作',
       width: 200,
-      fixed: "right",
+      fixed: 'right',
       render: (re) => (
         <div>
           <span onClick={() => handleDelete(re)}>删除</span>
@@ -119,53 +122,55 @@ export default function Index(props: Project.IPageProps) {
         searchData={pagination}
         searchConfig={[
           {
-            key: "name",
-            label: "用户名称",
-            type: "input",
+            key: 'name',
+            label: '用户名称',
+            type: 'input',
           },
           {
-            key: "select",
-            label: "下拉搜索",
-            type: "select",
-            options: [{ value: "选项1", key: "key1" }],
+            key: 'select',
+            label: '下拉搜索',
+            type: 'select',
+            options: [{ value: '选项1', key: 'key1' }],
           },
           {
-            key: "time",
-            label: "日期选择",
-            type: "timePicker",
-            format: "YYYY-MM-DD HH:mm:ss",
+            key: 'time',
+            label: '日期选择',
+            type: 'timePicker',
+            format: 'YYYY-MM-DD HH:mm:ss',
           },
           {
-            key: "month",
-            label: "月份选择",
-            type: "monthPicker",
-            format: "YYYY-MM",
+            key: 'month',
+            label: '月份选择',
+            type: 'monthPicker',
+            format: 'YYYY-MM',
           },
           {
-            key: ["creatTime", "creatTimeStart", "creatTimeEnd"],
-            label: "创建时间",
-            type: "rangePicker",
+            key: ['creatTime', 'creatTimeStart', 'creatTimeEnd'],
+            label: '创建时间',
+            type: 'rangePicker',
           },
           {
-            key: "treeSelect",
-            label: "树选择",
-            type: "treeSelect",
+            key: 'treeSelect',
+            label: '树选择',
+            type: 'treeSelect',
             props: {
               treeData: [],
             },
           },
           {
-            key: "cascader",
-            label: "树选择",
-            type: "cascader",
+            key: 'cascader',
+            label: '树选择',
+            type: 'cascader',
             props: {
               options: [],
             },
           },
         ]}
       />
-      <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-        <Button onClick={() => navigate("/finance//operate")}>新增</Button>
+      <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+        <Button onClick={() => navigate('/finance/account/operate')}>
+          新增
+        </Button>
       </div>
       <Table
         style={{ marginTop: 10 }}
@@ -180,7 +185,7 @@ export default function Index(props: Project.IPageProps) {
           showSizeChanger: true,
         }}
         rowKey="id"
-        scroll={{ x: "max-content" }}
+        scroll={{ x: 'max-content' }}
       />
     </div>
   )

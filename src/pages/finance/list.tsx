@@ -1,4 +1,4 @@
-/** @title <%= list.pageTitle %> */
+/** @title ddsdasd */
 import { useEffect, useState } from 'react'
 import { Button, Table, TableColumnsType, Modal, message } from 'antd'
 import { SearchQuery, PageTitle } from '@/components/common'
@@ -47,41 +47,48 @@ export default function Index(props: Project.IPageProps) {
       ...params,
     })
   }
-  <% if (list.table.includes("wordScale")) { %>
+
   const showWordDetail = (val, name) => {
     Modal.success({
       title: `查看${name}`,
-      content: val
+      content: val,
     })
   }
-  <% } %>
-  <% if (list.table.includes('delete')) { %>
+
   const handleDelete = (record) => {
     Modal.confirm({
-      title: "确认删除",
-      content: "删除后数据不可恢复！",
+      title: '确认删除',
+      content: '删除后数据不可恢复！',
       onOk: async () => {
         await deleteItemDemo({ id: record.id })
         message.success('操作成功')
         searchData({})
-      }
+      },
     })
   }
-  <% } %>
+
   const columns: TableColumnsType<IaccountListItem> = [
     {
       title: '用户名称',
       dataIndex: 'name',
     },
-    <% if (list.table.includes('wordScale')) { %> {
+    {
       title: '备注',
       dataIndex: 'remark',
       render: (val) => {
         if (val.length < 8) {
           return val
-        } else return <span className="primary-color" onClick={() => showWordDetail(val, '备注')}>{val.substring(0, 8)}...</span>
+        } else
+          return (
+            <span
+              className="primary-color"
+              onClick={() => showWordDetail(val, '备注')}
+            >
+              {val.substring(0, 8)}...
+            </span>
+          )
       },
-    }, <% } %>
+    },
     {
       title: '创建时间',
       dataIndex: 'createTime',
@@ -92,17 +99,13 @@ export default function Index(props: Project.IPageProps) {
       fixed: 'right',
       render: (re) => (
         <div>
-          <% if (list.table.includes('delete')) { %> <span onClick={() => handleDelete(re)}>
-            删除
-          </span> <% } %>
-          <span onClick={() => navigate(`<%= targetUrl %>/detail?id=${re.id}`)}>
+          <span onClick={() => handleDelete(re)}>删除</span>
+          <span onClick={() => navigate(`/finance/detail?id=${re.id}`)}>
             查看详情
           </span>
-          <% if (locals.operate) { %> <span
-            onClick={() => navigate(`<%= targetUrl %>/operate?id=${re.id}`)}
-          >
+          <span onClick={() => navigate(`/finance/operate?id=${re.id}`)}>
             编辑
-          </span> <% } %>
+          </span>
         </div>
       ),
     },
@@ -110,62 +113,43 @@ export default function Index(props: Project.IPageProps) {
 
   return (
     <div className="pages-account-index">
-      <PageTitle title="<%= list.pageTitle %>" />
+      <PageTitle title="ddsdasd" />
       <SearchQuery<IaccountListParams>
         className="search-box"
         fetchData={handleSearch}
         searchData={pagination}
         searchConfig={[
-          <% if (list.search.includes('input')) { %> {
+          {
             key: 'name',
             label: '用户名称',
             type: 'input',
-          },  <% } %>
-          <% if (list.search.includes('select')) { %>  {
+          },
+          {
             key: 'select',
             label: '下拉搜索',
             type: 'select',
             options: [{ value: '选项1', key: 'key1' }],
-          }, <% } %>
-          <% if (list.search.includes('timePicker')) { %> {
-            key: 'time',
-            label: '日期选择',
-            type: 'timePicker',
-            format: 'YYYY-MM-DD HH:mm:ss',
-          }, <% } %>
-          <% if (list.search.includes('monthPicker')) { %> {
+          },
+
+          {
             key: 'month',
             label: '月份选择',
             type: 'monthPicker',
             format: 'YYYY-MM',
-          },  <% } %>
-           <% if (list.search.includes('rangePicker')) { %> {
-            key: ['creatTime', 'creatTimeStart', 'creatTimeEnd'],
-            label: '创建时间',
-            type: 'rangePicker',
-          }, <% } %>
-          <% if (list.search.includes('treeSelect')) { %> {
+          },
+
+          {
             key: 'treeSelect',
             label: '树选择',
             type: 'treeSelect',
             props: {
               treeData: [],
             },
-          }, <% } %>
-          <% if (list.search.includes('cascader')) { %> {
-            key: 'cascader',
-            label: '树选择',
-            type: 'cascader',
-            props: {
-              options: [],
-            },
-          }, <% } %>
+          },
         ]}
       />
       <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-        <% if (locals.operate) { %> <Button onClick={() => navigate('<%= targetUrl %>/operate')}>
-          新增
-        </Button> <% } %>
+        <Button onClick={() => navigate('/finance/operate')}>新增</Button>
       </div>
       <Table
         style={{ marginTop: 10 }}

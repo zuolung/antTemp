@@ -6,9 +6,10 @@ import ejs from 'ejs'
 import prettier from 'prettier'
 
 const CWD = process.cwd()
+const SERVER_PORT = 8181
 
-var server = http.createServer(function (req, res) {
-  let url = req.url
+const server = http.createServer(function (req, res) {
+  const url = req.url
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Content-type', 'application/json')
 
@@ -27,10 +28,14 @@ var server = http.createServer(function (req, res) {
 
     req.on('end', async function () {
       const reqData = JSON.parse(postData)
-      const addDirPath = path.join(`${CWD}`, reqData.target, reqData.addDir)
+      const addDirPath = path.join(
+        `${CWD}`,
+        reqData.target,
+        reqData.addDir || '',
+      )
       if (!fs.existsSync(addDirPath)) {
         fs.mkdirSync(addDirPath)
-      } else {
+      } else if (reqData.addDir) {
         return res.end(
           JSON.stringify({ success: false, message: '新建文件夹已存在' }),
         )
@@ -47,7 +52,16 @@ var server = http.createServer(function (req, res) {
         if (!fs.existsSync(insertFilePath)) {
           await fs.writeFileSync(
             insertFilePath,
-            formatCode(ejs.render(ejsCon, reqData)),
+            formatCode(
+              ejs.render(ejsCon, {
+                ...reqData,
+                targetUrl: reqData.addDir
+                  ? `${reqData.target.replace('/src/pages', '')}/${
+                      reqData.addDir
+                    }`
+                  : reqData.target.replace('/src/pages', ''),
+              }),
+            ),
           )
         } else
           return res.end(
@@ -67,8 +81,8 @@ var server = http.createServer(function (req, res) {
   }
 })
 
-server.listen(8181, () => {
-  console.info(`page server start success: http://localhost:8181`)
+server.listen(SERVER_PORT, () => {
+  console.info(`page server start success: http://localhost:${SERVER_PORT}`)
 })
 
 function transformTree(data) {
