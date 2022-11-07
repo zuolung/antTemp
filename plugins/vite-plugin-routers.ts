@@ -173,7 +173,11 @@ async function globMax(files, callback) {
   let allPaths: string[] = []
   for (let i = 0; i < files.length; i++) {
     const pats = await globSync(files[i])
-    if (pats) allPaths = allPaths.concat(pats)
+    pats?.map((item) => {
+      if (!allPaths.includes(item)) {
+        allPaths.push(item)
+      }
+    })
   }
   callback(allPaths)
 }
